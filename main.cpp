@@ -1,8 +1,12 @@
+#pragma once
 #include<iostream>
 #include<fstream>
 #include<string>
 #include<windows.h>
 #include<vector>
+#include"Mail.h"
+#include"MailDatabase.h"
+#include"User.h"
 using namespace std;
 
 
@@ -65,9 +69,7 @@ using namespace std;
         string get_password();
         string get_adress();
 
-        void send_mail();//寄信
-        void mail_check();//查詢郵件紀錄
-        void change_password();//更改密碼
+        
 };
 
 
@@ -159,6 +161,9 @@ void menu(){//使用者登入後主畫面
         2.確認郵件已送達(收件)
         3.更改使用者密碼
     }*/
+    void send_mail();//寄信
+    void mail_check();//查詢郵件紀錄
+    void change_password();//更改密碼
 }
 
 

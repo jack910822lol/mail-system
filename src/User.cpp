@@ -1,3 +1,4 @@
+#pragma once
 #include<iostream>
 #include<string>
 #include"User.h"
@@ -30,11 +31,4 @@ std::string User::get_password(){
 
 std::string User::get_adress(){
     return adress;
-}
-
-void User::send_mail(){//寄信
-}
-void User::mail_check(){//查詢郵件紀錄
-}
-void User::change_password(){//更改密碼
 }
