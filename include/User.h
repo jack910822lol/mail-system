@@ -9,7 +9,7 @@ class User{//使用者
         string password;
         string adress;//地址
     public:
-        User(string,string);
+        User(string,string,string);
         void set_account(string);
         void set_password(string);
         void set_adress(string);

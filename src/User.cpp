@@ -4,9 +4,10 @@
 #include"User.h"
 using namespace std;
 
-User::User(std::string a, std::string b){
+User::User(std::string a, std::string b, std::string c){
     account=a;
     password=b;
+    adress=c;
 }
 
 void User::set_account(std::string a){

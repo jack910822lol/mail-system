@@ -96,9 +96,9 @@ class UserDatabase{//使用者資料庫
 };
 
 void UserDatabase::create_new_user(){//創建新使用者，創建完成接登入。
-    string account, password;
-    cin >> account >> password;//檢查。密碼限定7字以上。帳號重複則不予創立。(未完成都是新界在偷懶)
-    User new_user(account, password);
+    string account, password, adress;
+    cin >> account >> password>>adress;//檢查。密碼限定7字以上。帳號重複則不予創立。(未完成都是新界在偷懶)
+    User new_user(account, password, adress);
     user_database.push_back(new_user);
 }
 
