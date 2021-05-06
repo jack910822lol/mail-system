@@ -1,5 +1,5 @@
 #include<string>
-using namespace std;
+
 class Mail{//郵件
     private:
         std::string id;//編號

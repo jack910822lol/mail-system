@@ -28,7 +28,7 @@ void UserDatabase::create_new_user(){//創建新使用者，創建完成接登�
     user_database.push_back(new_user);
 }
 
-void access_user(int to_access)
+int UserDatabase::search_by_account(string account)
 {
-    
+
 }

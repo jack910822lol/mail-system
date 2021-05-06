@@ -1,7 +1,6 @@
 #pragma once
 #include<vector>
 #include"User.h"
-using namespace std;
 
 class UserDatabase{//使用者資料庫
     private:
@@ -9,7 +8,7 @@ class UserDatabase{//使用者資料庫
     public:
         void read_in_user_data();
         void create_new_user();
-        void access_user(int);
+        int search_by_account(std::string);
         friend void login();
         friend class Mailman;
 };

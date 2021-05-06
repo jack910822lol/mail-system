@@ -23,3 +23,8 @@ void MailDatabase::read_in_mail_data()
         file>>temp;
     }
 }
+
+int search_by_id(string id)//回傳在資料庫中的位置
+{
+
+}

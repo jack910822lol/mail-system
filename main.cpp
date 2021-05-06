@@ -7,6 +7,9 @@
 #include"Mail.h"
 #include"MailDatabase.h"
 #include"User.h"
+#include"UserDatabase.h"
+#include"Mailman.h"
+#include"MailmanDatabase.h"
 using namespace std;
 
 
@@ -84,7 +87,7 @@ void User::mail_check(){//查詢郵件紀錄
 
 
 
-class UserDatabase{//使用者資料庫
+/*class UserDatabase{//使用者資料庫
     private:
         vector<User> user_database;
     public:
@@ -120,20 +123,31 @@ void UserDatabase::read_in_user_data()//讀入使用者資料(user_data.txt)
     {
         file>>temp;
     }
-}
-
+}*/
 //==========================================================
 
-
-
-class Mailman : public User{//郵差繼承使用者
-    public:
-        void check_specific_mail();//查詢信件
-        void fetch_from_postOffice();//郵差自郵局取信
-        void mail_recived();//郵差將信送達
+/*class MailmanDatabase{
     private:
-        
-};
+        vector<Mailman> database;
+    public:
+        void read_in_mailman_data();
+        void search_by_id();
+};*/
+
+//==========================================================
+
+
+
+/*class Mailman{//郵差
+    private: 
+        string account;
+        string password;
+    public:
+        void set_account(string);
+        void set_password(string);
+        string get_account();
+        string get_password();
+};*/
 
 
 
@@ -141,10 +155,11 @@ class Mailman : public User{//郵差繼承使用者
 
 
 
-void login(){//密碼錯誤不鎖帳，但每次程式執行只能試三次。
+void login(int &who){//密碼錯誤不鎖帳，但每次程式執行只能試三次。
     string account,password;
     cin >> account >> password;
     //帳號不存在則跳是否創新帳，是則跳create_new_user()(Userdatabase函式)，否結束程式。 
+    //郵差回傳0, 使用者回傳1
 }
 
 
@@ -154,7 +169,7 @@ void login(){//密碼錯誤不鎖帳，但每次程式執行只能試三次。
 
 
 
-void menu(){//使用者登入後主畫面
+void user_menu(){//使用者登入後主畫面
     /*展示可用操作{
         1.查詢郵件(僅能查詢自己郵件)(根據編號或自行選擇)
         2.確認郵件已送達(收件)
@@ -187,6 +202,20 @@ void mailman_menu(){//郵差登入後介面
 
 int main()
 {
-    UserDatabase userdatabase;
-    userdatabase.read_in_user_data();
+    UserDatabase user_database;
+    MailmanDatabase mailman_database;
+    MailDatabase mail_database;
+    user_database.read_in_user_data();
+    mailman_database.read_in_mailman_data();
+    mail_database.read_in_mail_data();
+    int who;
+    login(who);//郵差:who=0, 使用者:who=1;
+    if(who==0)
+    {
+        mailman_menu();
+    }
+    else if(who==1)
+    {
+        user_menu();
+    }
 }
