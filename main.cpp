@@ -68,8 +68,6 @@ using namespace std;
         string get_account();
         string get_password();
         string get_adress();
-
-        
 };
 
 
@@ -94,6 +92,7 @@ class UserDatabase{//使用者資料庫
         void create_new_user();
         void access_user();
         friend void login();
+        friend class Mailman;
 };
 
 void UserDatabase::create_new_user(){//創建新使用者，創建完成接登入。
