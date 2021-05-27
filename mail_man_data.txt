@@ -1,0 +1,3 @@
+mailman1 password1
+mailman2 password2
+mailman3 password3

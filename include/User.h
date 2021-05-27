@@ -3,7 +3,7 @@
 #include<string>
 
 class User{//使用者
-    protected:
+    private:
         std::string account;
         std::string password;
         std::string adress;//地址
