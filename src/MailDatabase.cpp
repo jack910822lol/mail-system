@@ -15,6 +15,7 @@ void MailDatabase::set_new_mail(string Sender_account, string Sender_adress, Use
     string sender_adress=Sender_adress;
     string reciver_account;
     Mail tmp_mail;
+    system("CLS");
     cout<<"enter whom to send"<<endl;
     cin>>reciver_account;
     int tmp=user_database.search_by_account(reciver_account);
@@ -97,8 +98,7 @@ void MailDatabase::search_mail_by_account(string searching_account)
     {
         if(database[i].get_sender()==searching_account)
         {
-            cout<<"id:"<<database[i].get_id()<<endl
-                <<"sender: "<<database[i].get_sender()<<endl
+            cout<<"sender: "<<database[i].get_sender()<<endl
                 <<"sender adress: "<<database[i].get_sender_adress()<<endl
                 <<"recipient: "<<database[i].get_recipient()<<endl
                 <<"recipient adress: "<<database[i].get_recipient_adress()<<endl;

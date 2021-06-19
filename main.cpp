@@ -10,26 +10,47 @@
 #include"MailmanDatabase.h"
 using namespace std;
 
+void SetColor(int color = 7)
+{
+  HANDLE hConsole;
+  hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+  SetConsoleTextAttribute(hConsole,color);
+}
 
-void login(int &who, MailmanDatabase& mailman_database, UserDatabase& user_database, int &user_index, bool& login_success){//密碼錯誤不鎖帳，但每次程式執行只能試三次。
+void gotoxy(int xpos, int ypos)
+{
+  COORD scrn;
+  HANDLE hOuput = GetStdHandle(STD_OUTPUT_HANDLE);
+  scrn.X = xpos; scrn.Y = ypos;
+  SetConsoleCursorPosition(hOuput,scrn);
+}
+
+void login(int &who, MailmanDatabase& mailman_database, UserDatabase& user_database, int &user_index, bool& login_success){
     _relogin:
     system("cls");
     bool user_exisit=0;
     string account,password;
-    cout<<"please enter ur account"<<endl;
-    cin >> account;
+    SetColor(174);
+    cout<<"______________________________"<<endl;
+    cout<<"|                            |"<<endl;
+    cout<<"|account:                    |"<<endl;
+    cout<<"|password:                   |"<<endl;
+    cout<<"|                            |"<<endl;
+    cout<<"|____________________________|"<<endl;
+    gotoxy(9,2);
+    cin>>account;
+    gotoxy(10,3);
     int tmp = mailman_database.search_by_account(account);
-    if(tmp!= -1)//有這名郵差，資料庫位置為tmp
+    if(tmp!= -1)
     {
         bool flag=0;
         for(int i=0; i<=3; i++)
         {
             if(i==3)//login fail
             {
-                flag=0; 
+                flag=0;
                 break;
-            }
-            cout<<"please enter your password"<<endl;
+            }     
             cin>>password;
             if(mailman_database.check_password(tmp, password))//login success with identity : mailman
             {
@@ -38,7 +59,7 @@ void login(int &who, MailmanDatabase& mailman_database, UserDatabase& user_datab
             }
         }
         if(flag==0)//login fail
-        {   
+        {
             login_success=0;
             return;
         }
@@ -50,12 +71,14 @@ void login(int &who, MailmanDatabase& mailman_database, UserDatabase& user_datab
             return;
         }
     }
-    //使用者輸入的帳號非郵差，查詢是否為使用者帳號
+    //�ϥΪ̿�J���b���D�l�t�A�d�߬O�_���ϥΪ̱b��
     tmp= user_database.search_by_account(account);
-    if(tmp==-1)//無此名使用者,詢問是否創新帳號
+    if(tmp==-1)//�L���W�ϥΪ�,�߰ݬO�_�зs�b��
     {
+        SetColor();
+        system("cls");
         char YN;
-        cout<<"no user name is "<<account<<" ,create a new account?(enter Y or N)"<<endl;
+        cout<<"there is no account \""<<account<<"\", create new? ( Y / N )"<<endl;
         cin>>YN;
         if(YN=='N')
         {
@@ -83,18 +106,22 @@ void login(int &who, MailmanDatabase& mailman_database, UserDatabase& user_datab
             Sleep(2000);
             goto _relogin;//relogin
         }
+        else{
+            cout << "No such selection."<< endl;
+            return;
+        }
     }
-    else if(tmp!=-1)//有此名使用者,資料庫中位置為tmp
+    else if(tmp!=-1)//�����W�ϥΪ�,��Ʈw����m��tmp
     {
         bool flag=0;
         for(int i=0; i<=3; i++)
         {
             if(i==3)
             {
-                flag=0; 
+                flag=0;
                 break;
             }
-            cout<<"please enter your password"<<endl;
+            gotoxy(9,3);
             cin>>password;
             if(user_database.check_password(tmp, password))
             {
@@ -114,8 +141,8 @@ void login(int &who, MailmanDatabase& mailman_database, UserDatabase& user_datab
             user_index=tmp;
             return;
         }
-    } 
-    //郵差回傳0, 使用者回傳1(&int who)
+    }
+    //�l�t�^��0, �ϥΪ̦^��1(&int who)
 }
 
 
@@ -125,25 +152,31 @@ void login(int &who, MailmanDatabase& mailman_database, UserDatabase& user_datab
 
 
 
-int User_menu(int& flag,int index, UserDatabase& userdatabase, MailDatabase& maildatabase){//使用者登入後主畫面
-    /*展示可用操作{
-        1.查詢郵件(僅能查詢自己郵件)(根據編號或全部)
-        2.確認郵件已送達(收件)
-        3.更改使用者密碼
+int User_menu(int& flag,int index, UserDatabase& userdatabase, MailDatabase& maildatabase){//�ϥΪ̵n�J��D�e��
+    /*�i�ܥi�ξާ@{
+        1.�d�߶l��(�ȯ�d�ߦۤv�l��)(�ھڽs���Υ���)
+        2.�T�{�l��w�e�F(����)
+        3.���ϥΪ̱K�X
     }*/
+    SetColor();
     system("CLS");
+    SetColor(174);
     User tmp=userdatabase.get_user(index);
-    cout<<"Hello! "<<tmp.get_account()<<endl
-    <<"enter 1 to send a mail"<<endl
-    <<"enter 2 to check your mail"<<endl
-    <<"enter 3 to change password"<<endl
-    <<"enter 4 to ensure mail"<<endl
-    <<"enter 5 to logout"<<endl;
+    cout<<"_____________________________________ "<<endl
+        <<"|                                    |"<<endl
+        <<"|  Hello!                            |"<<endl
+        <<"|  enter 1 to send a mail            |"<<endl
+        <<"|  enter 2 to check your mail        |"<<endl
+        <<"|  enter 3 to change password        |"<<endl
+        <<"|  enter 4 to ensure mail            |"<<endl
+        <<"|  enter 5 to logout                 |"<<endl
+        <<"|____________________________________|"<<endl;
+    SetColor();
     cin>>flag;
 };
 
 
-void send_mail(int user_index, UserDatabase& user_database, MailDatabase& mail_database)//寄信
+void send_mail(int user_index, UserDatabase& user_database, MailDatabase& mail_database)//�H�H
 {
     string sender_account=user_database.get_user(user_index).get_account();
     string sender_adress=user_database.get_user(user_index).get_adress();
@@ -155,25 +188,32 @@ void send_mail(int user_index, UserDatabase& user_database, MailDatabase& mail_d
 }
 
 
-void mail_check(int user_index, UserDatabase& user_database, MailDatabase& mail_database)//查詢郵件
+void mail_check(int user_index, UserDatabase& user_database, MailDatabase& mail_database)//�d�߶l��
 {
-    int choose;
+    system("cls");
+    cout << "NOW CHECKING MAIL...\n" << endl;
+    string choose;
     cout<<"to view all mail please enter 1"<<endl
         <<"to search by mail_id please enter 2"<<endl;
     cin>>choose;
-    if(choose==1)
+    system("cls");
+    if(choose=="1")
     {
+        cout << "NOW CHECKING MAIL...\n" << endl;
         mail_database.search_mail_by_account(user_database.get_user(user_index).get_account());
     }
-    else if(choose==2)
+    else if(choose=="2")
     {
+        cout << "NOW CHECKING MAIL...\n" << endl;
         string mail_id;
-        cout<<"enter your mail_id"<<endl;
+        cout<<"enter your mail_id:"<<endl;
         cin>>mail_id;
         mail_database.search_mail_by_id(mail_id);
     }
-    else
-        cout<<"u idiot"<<endl;
+    else{
+        cout << "NOW CHECKING MAIL...\n" << endl;
+        cout<<"no such selection."<<endl;
+    }
     string trash;
     cout<<"enter anything to back to menu"<<endl;
     cin>>trash;
@@ -181,27 +221,32 @@ void mail_check(int user_index, UserDatabase& user_database, MailDatabase& mail_
 }
 
 
-void change_password(int user_index, UserDatabase& user_database)//更改密碼
+void change_password(int user_index, UserDatabase& user_database)//���K�X
 {
+    system("cls");
+    cout << "NOW CHANGING PASSWORD...\n" << endl;
     string new_password;
-    cout<<"please enter new password"<<endl;
+    cout<<"enter Ur new password: ";
     cin>>new_password;
+    cout << endl;
     string tmp_account = user_database.get_user(user_index).get_account();
     string tmp_password = new_password;
     string tmp_adress = user_database.get_user(user_index).get_adress();
     User tmp_user(tmp_account, tmp_password, tmp_adress);
     user_database.set_user(user_index, tmp_user);
-    cout<<"your new password is "<<user_database.get_user(user_index).get_password();
-    cout<<"change successful!"<<endl;
+    cout<<"Ur new password is "<<user_database.get_user(user_index).get_password();
+    cout<<". Change successful!"<<endl;
     string trash;
-    cout<<"enter anything to back to menu"<<endl;
+    cout<<"enter anything to go back to menu"<<endl;
     cin>>trash;
     return;
 }
 
 
-void ensure_mail(int user_index, UserDatabase& user_database, MailDatabase& mail_database)//收件
+void ensure_mail(int user_index, UserDatabase& user_database, MailDatabase& mail_database)//����
 {
+    system("cls");
+    cout << "NOW ENSURING MAIL...\n" << endl;
     string reciver_account = user_database.get_user(user_index).get_account();
     mail_database.reciver_change_mail_status(reciver_account);
     string trash;
@@ -211,24 +256,31 @@ void ensure_mail(int user_index, UserDatabase& user_database, MailDatabase& mail
 }
 
 
-void logout(UserDatabase& user_database, MailmanDatabase& mailman_database, MailDatabase& mail_database)//登出, 寫檔
+void logout(UserDatabase& user_database, MailmanDatabase& mailman_database, MailDatabase& mail_database)//�n�X, �g��
 {
     user_database.write_in_user_data();
     mailman_database.write_in_mailman_data();
     mail_database.write_in_mail_data();
-    cout<<"bye bye"<<endl;
-    cout<<"shout down in 5 second"<<endl;
-    Sleep(5000);
+    cout<<"good bye"<<endl;
+    cout<<"shout down in ";
+    for(int i = 9; i> 0; i--){
+        if(i%3 == 0)
+            cout << i/3;
+        Sleep(33);
+        cout << '.';
+        Sleep(300);
+    }
 }
 
 //==========================================================
 
 
 
-void mailman_menu(int& flag, int user_index, MailmanDatabase& mailman_database, MailDatabase& maildata_base){//郵差登入後介面
-    //更改郵件狀態
-    //根據郵件id查詢
-    //登出
+void mailman_menu(int& flag, int user_index, MailmanDatabase& mailman_database, MailDatabase& maildata_base){//�l�t�n�J�ᤶ��
+    //���l�󪬺A
+    //�ھڶl��id�d��
+    //�n�X
+    SetColor();
     system("CLS");
     Mailman tmp = mailman_database.get_mailman(user_index);
     cout<<"Hello! "<<tmp.get_account()<<endl
@@ -241,15 +293,17 @@ void mailman_menu(int& flag, int user_index, MailmanDatabase& mailman_database, 
 
 void change_mail_status(MailDatabase& mail_databae)
 {
+    system("cls");
     string mail_id;
+    cout << "NOW CHANGING MAIL STATUS..." << endl;
     cout<<"please enter the mail_id"<<endl;
     cin>>mail_id;
     int tmpindex=mail_databae.get_mail_index_by_id(mail_id);
     if(tmpindex==-1)
     {
         cout<<"wrong id"<<endl;
-        cout<<"back to menu in 2 sec"<<endl;
-        Sleep(2000);
+        cout<<"back to menu in 2..."<<endl;
+        Sleep(1900);
         return;
     }
     mail_databae.mailman_change_mail_status(mail_id);
@@ -263,27 +317,32 @@ void change_mail_status(MailDatabase& mail_databae)
 
 void mailman_check_mail(MailDatabase& mail_database)
 {
-    int choose;
-    cout<<"search mail by mail_id enter 1"<<endl
-        <<"search mail by sender_account enter 2"<<endl;
+    system("cls");
+    string choose;
+    cout<<"To search mail by mail_id, enter 1"<<endl
+        <<"To search mail by sender_account, enter 2"<<endl;
     cin>>choose;
-    if(choose==1)
+    if(choose=="1")
     {
+        system("cls");
+        cout << "NOW SEARCHING MAIL BY ID...\n" << endl;
         cout<<"enter mail_id"<<endl;
         string mail_id;
         cin>>mail_id;
         mail_database.search_mail_by_id(mail_id);
     }
-    else if(choose==2)
+    else if(choose=="2")
     {
-        cout<<"enter sender_account"<<endl;
+        system("cls");
+        cout << "NOW SEARCHING MAIL BY SENDER ACCOUNT..." << endl;
+        cout<<"enter sender_account: "<<endl;
         string mail_sender;
         cin>>mail_sender;
         mail_database.search_mail_by_account(mail_sender);
     }
-    else 
+    else
     {
-        cout<<"u idiot"<<endl;
+        cout<<"No such selection."<<endl;
     }
     string trash;
     cout<<"enter anything to back to menu"<<endl;
@@ -305,9 +364,11 @@ int main()
     int who;
     int user_index;
     bool login_success;
-    login(who, mailman_database, user_database, user_index, login_success);//郵差:who=0, 使用者:who=1;
+    login(who, mailman_database, user_database, user_index, login_success);//�l�t:who=0, �ϥΪ�:who=1;
     if(login_success==0)
     {
+        SetColor();
+        system("cls");
         cout<<"login failed"<<endl;
         Sleep(2000);
         return 0;
@@ -364,6 +425,6 @@ int main()
                     break;
             }
         }
-        logout(user_database, mailman_database, mail_database);//寫檔
+        logout(user_database, mailman_database, mail_database);//�g��
     }
 }
