@@ -97,7 +97,8 @@ void MailDatabase::search_mail_by_account(string searching_account)
     {
         if(database[i].get_sender()==searching_account)
         {
-            cout<<"sender: "<<database[i].get_sender()<<endl
+            cout<<"id:"<<database[i].get_id()<<endl
+                <<"sender: "<<database[i].get_sender()<<endl
                 <<"sender adress: "<<database[i].get_sender_adress()<<endl
                 <<"recipient: "<<database[i].get_recipient()<<endl
                 <<"recipient adress: "<<database[i].get_recipient_adress()<<endl;
