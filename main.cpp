@@ -50,7 +50,7 @@ void login(int &who, MailmanDatabase& mailman_database, UserDatabase& user_datab
             {
                 flag=0;
                 break;
-            }     
+            }
             cin>>password;
             if(mailman_database.check_password(tmp, password))//login success with identity : mailman
             {
@@ -121,7 +121,7 @@ void login(int &who, MailmanDatabase& mailman_database, UserDatabase& user_datab
                 flag=0;
                 break;
             }
-            gotoxy(9,3);
+            gotoxy(10,3);
             cin>>password;
             if(user_database.check_password(tmp, password))
             {
